@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Problem Tracking</title>
+</head>
+<body>
+
+<h2>Problem Tracking Form</h2>
+
+<form id="form">
+  <input name="week" placeholder="Week" required><br>
+  <input name="line" placeholder="Line" required><br>
+  <input name="model" placeholder="Model" required><br>
+  <input name="station" placeholder="Station" required><br>
+  <input name="category" placeholder="Category" required><br>
+  <input name="problem_type" placeholder="Problem type" required><br>
+
+  <textarea name="description" placeholder="Description"></textarea><br>
+
+  <input name="status" placeholder="Status"><br>
+  <input name="owner" placeholder="Owner"><br>
+
+  <textarea name="corrective_action" placeholder="Corrective action"></textarea><br>
+
+  <input type="date" name="date_finished"><br>
+
+  <textarea name="comments" placeholder="Comments"></textarea><br>
+
+  <input name="evidence" placeholder="Evidence (link o texto)"><br>
+
+  <input type="date" name="date_detection" required><br><br>
+
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+document.getElementById("form").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const url = "https://script.google.com/macros/s/AKfycbx1fLFSLGBO_EIFJP7aZF91zxaQUg3_qDuQqnhT0O1rpHXGws_PU_PhvhTHNSLwi6gEAg/exec";
+
+  const formData = new FormData(this);
+
+  fetch(url, {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.text())
+  .then(() => {
+    alert("Data sent successfully");
+    document.getElementById("form").reset();
+  })
+  .catch(() => alert("Error sending data"));
+});
+</script>
+
+</body>
+</html>
