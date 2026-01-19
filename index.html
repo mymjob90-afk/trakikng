@@ -1,44 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Problem Tracking</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 15px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    form {
+      background: #fff;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    input,
+    textarea,
+    select,
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      background: #1976d2;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #125aa0;
+    }
+  </style>
 </head>
+
 <body>
 
 <h2>Problem Tracking Form</h2>
 
 <form id="form">
   <select name="week" required>
-  <option value="">Select Week</option><br>
-  <option>Week 1</option>
-  <option>Week 2</option>
-  <option>Week 3</option>
-</select>
+    <option value="">Select Week</option>
+    <option>Week 1</option>
+    <option>Week 2</option>
+    <option>Week 3</option>
+  </select>
 
-  
-  <input name="line" placeholder="Line" required><br>
-  <input name="model" placeholder="Model" required><br>
-  <input name="station" placeholder="Station" required><br>
-  <input name="category" placeholder="Category" required><br>
-  <input name="problem_type" placeholder="Problem type" required><br>
+  <input name="line" placeholder="Line" required>
+  <input name="model" placeholder="Model" required>
+  <input name="station" placeholder="Station" required>
+  <input name="category" placeholder="Category" required>
+  <input name="problem_type" placeholder="Problem type" required>
 
-  <textarea name="description" placeholder="Description"></textarea><br>
+  <textarea name="description" placeholder="Description"></textarea>
 
-  <input name="status" placeholder="Status"><br>
-  <input name="owner" placeholder="Owner"><br>
+  <input name="status" placeholder="Status">
+  <input name="owner" placeholder="Owner">
 
-  <textarea name="corrective_action" placeholder="Corrective action"></textarea><br>
+  <textarea name="corrective_action" placeholder="Corrective action"></textarea>
 
-  <input type="date" name="date_finished"><br>
+  <input type="date" name="date_finished">
 
-  <textarea name="comments" placeholder="Comments"></textarea><br>
+  <textarea name="comments" placeholder="Comments"></textarea>
 
-  <input name="evidence" placeholder="Evidence (link o texto)"><br>
+  <input name="evidence" placeholder="Evidence (link o texto)">
 
-  <input type="date" name="date_detection" required><br><br>
+  <input type="date" name="date_detection" required>
 
   <button type="submit">Submit</button>
 </form>
@@ -58,7 +109,7 @@ document.getElementById("form").addEventListener("submit", function(e) {
   .then(res => res.text())
   .then(() => {
     alert("Data sent successfully");
-    document.getElementById("form").reset();
+    this.reset();
   })
   .catch(() => alert("Error sending data"));
 });
