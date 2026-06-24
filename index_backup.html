@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Problem Tracking</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 650px;
+      margin: auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 25px;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header p {
+      margin: 8px 0 0;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    form {
+      background: #fff;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+
+    .form-section {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .form-section:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #667eea;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 2px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #444;
+      margin-bottom: 6px;
+    }
+
+    label .required {
+      color: #e53935;
+      margin-left: 2px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 15px;
+      border-radius: 10px;
+      border: 2px solid #e8e8e8;
+      background: #fafafa;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    input:hover,
+    textarea:hover,
+    select:hover {
+      border-color: #d0d0d0;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #667eea;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    label .hint {
+      font-weight: normal;
+      font-size: 11px;
+      color: #888;
+      margin-left: 4px;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    input[type="date"] {
+      cursor: pointer;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* File upload styling */
+    .file-upload-wrapper {
+      margin-top: 8px;
+    }
+
+    .file-input-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: #f0f0f0;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .file-input-label:hover {
+      border-color: #667eea;
+      background: #f5f5ff;
+      color: #667eea;
+    }
+
+    .file-input-label input[type="file"] {
+      display: none;
+    }
+
+    .file-preview {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .file-preview-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: #e8f4e8;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #2e7d32;
+    }
+
+    .file-preview-item .remove-file {
+      cursor: pointer;
+      color: #c62828;
+      font-weight: bold;
+      margin-left: 4px;
+    }
+
+    .file-preview-item .remove-file:hover {
+      color: #ff1744;
+    }
+
+    /* Status badges styling hint */
+    input[name="status"]:focus {
+      border-color: #4caf50;
+    }
+
+    /* Progress indicator */
+    .progress-bar {
+      background: #e8e8e8;
+      height: 6px;
+      border-radius: 3px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 12px;
+      color: #888;
+      text-align: right;
+      margin-bottom: 6px;
+    }
+
+    /* Quick templates - compact horizontal scroll */
+    .quick-templates {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quick-templates-title {
+      font-size: 11px;
+      color: #888;
+      white-space: nowrap;
+    }
+
+    .template-buttons {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .template-buttons::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .template-buttons::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 2px;
+    }
+
+    .template-btn {
+      padding: 5px 10px;
+      font-size: 11px;
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #666;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .template-btn:hover {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .no-templates {
+      font-size: 11px;
+      color: #aaa;
+      font-style: italic;
+    }
+
+    /* Collapsible section */
+    .collapsible-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .collapsible-header .toggle-icon {
+      font-size: 18px;
+      transition: transform 0.3s ease;
+      color: #888;
+    }
+
+    .collapsible-header.collapsed .toggle-icon {
+      transform: rotate(-90deg);
+    }
+
+    .collapsible-content {
+      max-height: 1000px;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+      opacity: 1;
+    }
+
+    .collapsible-content.collapsed {
+      max-height: 0;
+      opacity: 0;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #2e7d32;
+      color: white;
+      padding: 16px 28px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+      font-weight: 500;
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.4s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.error {
+      background: #c62828;
+    }
+
+    /* Remember preferences checkbox */
+    .remember-prefs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .remember-prefs input[type="checkbox"] {
+      width: auto;
+      cursor: pointer;
+    }
+
+    /* Field completed indicator */
+    .form-group.completed input,
+    .form-group.completed select {
+      border-color: #4caf50;
+      background: #f8fff8;
+    }
+
+    /* Loading state */
+    button.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    button.loading::after {
+      content: '';
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-left: 10px;
+      border: 2px solid white;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Optional badge */
+    .optional-badge {
+      font-size: 10px;
+      background: #f0f0f0;
+      color: #888;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      font-weight: normal;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 12px;
+      }
+
+      form {
+        padding: 20px;
+        border-radius: 12px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .header h2 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="header">
+    <h2>📋 Problem Tracking Form</h2>
+    <p>Report and track production issues</p>
+  </div>
+
+  <form id="form">
+    <!-- Progress indicator -->
+    <div class="progress-text"><span id="progress-count">0</span> of <span id="progress-total">6</span> required fields</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
+
+    <!-- Quick Templates (learns from submissions) -->
+    <div class="quick-templates">
+      <span class="quick-templates-title">⚡ Quick:</span>
+      <div class="template-buttons" id="template-buttons">
+        <!-- Populated dynamically from localStorage -->
+      </div>
+    </div>
+    <!-- Basic Information Section -->
+    <div class="form-section">
+      <div class="section-title">Basic Information</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Week <span class="required">*</span></label>
+          <select name="week" required>
+            <option value="">Select Week</option>
+            <option>Week 1</option>
+            <option>Week 2</option>
+            <option>Week 3</option>
+            <option>Week 4</option>
+            <option>Week 5</option>
+            <option>Week 6</option>
+            <option>Week 7</option>
+            <option>Week 8</option>
+            <option>Week 9</option>
+            <option>Week 10</option>
+            <option>Week 11</option>
+            <option>Week 12</option>
+            <option>Week 13</option>
+            <option>Week 14</option>
+            <option>Week 15</option>
+            <option>Week 16</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Shift <span class="required">*</span></label>
+          <input name="shift" list="shifts" placeholder="Select shift" required>
+          <datalist id="shifts">
+            <option value="Day shift">
+            <option value="Middle shift">
+            <option value="Night shift">  
+          </datalist>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Line <span class="required">*</span></label>
+          <select name="line" required>
+            <option value="">Select Line</option>
+            <option>ALL</option>
+            <option>C1A</option>
+            <option>C4A</option>
+            <option>D2A</option>
+            <option>D3A</option>
+            <option>C7A</option>
+            <option>C9A</option>
+            <option>B4A</option>
+            <option>C5A</option>
+            <option>C6A</option>
+            <option>B3A</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Model <span class="required">*</span></label>
+          <input name="model" list="models" placeholder="Select model" required>
+          <datalist id="models">
+            <option value="ALL">
+            <option value="V75C">
+            <option value="V75CE67">
+            <option value="V75COP">
+            <option value="V76C">
+            <option value="V76CE67">
+            <option value="V75COP">
+            <option value="V73F">
+            <option value="V73FOP">
+            <option value="V73FE41">
+            <option value="V74A"> 
+            <option value="V71FR">
+            <option value="V71FLS">
+            <option value="V71FLX">
+            <option value="V71R">
+            <option value="V71L">
+            <option value="V73H">
+            <option value="V73HOP">
+            <option value="V74">
+            <option value="V75D">
+            <option value="V76D">
+            <option value="V77B">
+          </datalist>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Station <span class="required">*</span></label>
+          <input name="station" list="stations" placeholder="Select station" required>
+          <datalist id="stations">
+            <option value="ALL">
+            <option value="Pincheck1">
+            <option value="Pincheck2">
+            <option value="Pincheck3">
+            <option value="Timcheck1">
+            <option value="Timcheck2">
+            <option value="Timcheck3">
+            <option value="Glueweight1">
+            <option value="Glueweight2">
+            <option value="Glueweight3">
+            <option value="Assy1">
+            <option value="Assy2">
+            <option value="Assy3">
+            <option value="CCDcheck1">
+            <option value="CCDcheck2">
+            <option value="CCDcheck3">
+            <option value="Function">   
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label>Category <span class="required">*</span></label>
+          <input name="category" list="categorias" placeholder="Select category" required>
+          <datalist id="categorias">
+            <option value="Software Team">
+            <option value="Auto Team">
+            <option value="Fixture Team">
+            <option value="Production">
+            <option value="Shopfloor">
+          </datalist>
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue Details Section -->
+    <div class="form-section">
+      <div class="section-title">Issue Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Issue Time <span class="required">*</span></label>
+          <input name="issue_time" list="issue_times" placeholder="Select or type time" required>
+          <datalist id="issue_times">
+            <!-- Options populated by JavaScript based on shift -->
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label>Date Detection</label>
+          <input type="date" name="date_detection">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description <span class="hint">(learns from your inputs)</span></label>
+        <input name="description" list="descriptions" placeholder="Type or select from previous descriptions">
+        <datalist id="descriptions">
+          <!-- Populated dynamically from localStorage -->
+        </datalist>
+      </div>
+    </div>
+
+    <!-- Resolution Section (Collapsible) -->
+    <div class="form-section">
+      <div class="section-title collapsible-header" id="resolution-header">
+        <span>Resolution & Status <span class="optional-badge">Optional - auto-filled</span></span>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content" id="resolution-content">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Status</label>
+            <select name="status">
+              <option value="Done" selected>Done</option>
+              <option value="Pending">Pending</option>
+              <option value="In process">In process</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Owner</label>
+            <select name="owner" id="owner-select">
+              <option value="">Select Owner</option>
+              <option value="Eduardo Batarse">Eduardo Batarse</option>
+              <option value="Juan Romay">Juan Romay</option>
+              <option value="Job Ramirez">Job Ramirez</option>
+              <option value="Eduardo Moreno">Eduardo Moreno</option>
+              <option value="Joan Ocaña">Joan Ocaña</option>
+              <option value="Imanol Montellano">Imanol Montellano</option>
+              <option value="Angel Hernandez">Angel Hernandez</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Corrective Action <span class="hint">(learns from your inputs)</span></label>
+          <input name="corrective_action" list="corrective_actions" placeholder="Type or select from previous actions">
+          <datalist id="corrective_actions">
+            <!-- Populated dynamically from localStorage -->
+          </datalist>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date Finished <span class="required">*</span></label>
+            <input type="date" name="date_finished" required>
+          </div>
+          <div class="form-group">
+            <label>Evidence Link</label>
+            <input name="evidence" placeholder="Paste link or reference">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Attach Files <span class="hint">(images, documents)</span></label>
+          <div class="file-upload-wrapper">
+            <label class="file-input-label">
+              📎 Click to attach files
+              <input type="file" id="evidence_files" name="evidence_files" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
+            </label>
+            <div class="file-preview" id="file-preview"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Comments</label>
+          <textarea name="comments" placeholder="Any additional notes..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Remember preferences -->
+    <label class="remember-prefs">
+      <input type="checkbox" id="remember-prefs" checked>
+      Remember my Line & Owner for next time
+    </label>
+
+    <button type="submit" id="submit-btn">✓ Submit Report</button>
+  </form>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== AUTO-FILL FUNCTIONS =====
+
+// Get current week number of the year (ISO week)
+function getCurrentWeekNumber() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
+  return Math.ceil((days + startOfYear.getDay() + 1) / 7);
+}
+
+// Auto-select current week
+function autoSelectWeek() {
+  const weekNum = getCurrentWeekNumber();
+  const weekSelect = document.querySelector('select[name="week"]');
+  
+  // Find and select the matching week option (up to week 16)
+  if (weekNum >= 1 && weekNum <= 16) {
+    const optionValue = `Week ${weekNum}`;
+    for (let option of weekSelect.options) {
+      if (option.text === optionValue) {
+        option.selected = true;
+        break;
+      }
+    }
+  }
+}
+
+// Auto-detect shift based on current time
+function autoDetectShift() {
+  const hour = new Date().getHours();
+  const shiftInput = document.querySelector('input[name="shift"]');
+  
+  // Day shift: 7:00 - 15:00
+  // Middle shift: 15:00 - 23:00
+  // Night shift: 23:00 - 7:00
+  if (hour >= 7 && hour < 15) {
+    shiftInput.value = "Day shift";
+  } else if (hour >= 15 && hour < 23) {
+    shiftInput.value = "Middle shift";
+  } else {
+    shiftInput.value = "Night shift";
+  }
+}
+
+// Auto-fill date detection with today's date
+function autoFillDateDetection() {
+  const dateInput = document.querySelector('input[name="date_detection"]');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.value = today;
+}
+
+// Auto-fill date finished with today's date
+function autoFillDateFinished() {
+  const dateInput = document.querySelector('input[name="date_finished"]');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.value = today;
+}
+
+// Auto-fill current time for issue time
+function autoFillIssueTime() {
+  const timeInput = document.querySelector('input[name="issue_time"]');
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  timeInput.value = `${hours}:${minutes}`;
+}
+
+// Update issue time options based on shift
+function updateIssueTimeOptions(shift) {
+  const datalist = document.getElementById('issue_times');
+  datalist.innerHTML = ''; // Clear existing options
+  
+  let hours = [];
+  
+  if (shift === 'Day shift') {
+    // Day shift: 7:00 AM - 3:00 PM
+    hours = ['07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', 
+             '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00'];
+  } else if (shift === 'Middle shift') {
+    // Middle shift: 3:00 PM - 11:00 PM
+    hours = ['15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30',
+             '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00'];
+  } else if (shift === 'Night shift') {
+    // Night shift: 11:00 PM - 7:00 AM
+    hours = ['23:00', '23:30', '00:00', '00:30', '01:00', '01:30', '02:00', '02:30',
+             '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00'];
+  }
+  
+  hours.forEach(time => {
+    const option = document.createElement('option');
+    option.value = time;
+    datalist.appendChild(option);
+  });
+}
+
+// Listen for shift changes to update issue time options
+function setupShiftListener() {
+  const shiftInput = document.querySelector('input[name="shift"]');
+  
+  // Update on input change
+  shiftInput.addEventListener('input', function() {
+    updateIssueTimeOptions(this.value);
+  });
+  
+  // Also update on blur (when user selects from datalist)
+  shiftInput.addEventListener('change', function() {
+    updateIssueTimeOptions(this.value);
+  });
+}
+
+// Run all auto-fill functions on page load
+document.addEventListener('DOMContentLoaded', function() {
+  autoSelectWeek();
+  autoDetectShift();
+  autoFillDateDetection();
+  autoFillDateFinished();
+  autoFillIssueTime();
+  
+  // Setup shift listener and populate initial issue time options
+  setupShiftListener();
+  const shiftInput = document.querySelector('input[name="shift"]');
+  updateIssueTimeOptions(shiftInput.value);
+  
+  // Setup file upload preview
+  setupFileUpload();
+  
+  // Load saved descriptions
+  loadSavedDescriptions();
+  
+  // Also load saved corrective actions
+  loadSavedCorrectiveActions();
+  
+  // Setup collapsible sections
+  setupCollapsible();
+  
+  // Setup quick templates
+  setupQuickTemplates();
+  
+  // Setup progress tracking
+  setupProgressTracking();
+  
+  // Load saved preferences (Line & Owner)
+  loadSavedPreferences();
+});
+
+// ===== FILE UPLOAD HANDLING =====
+let selectedFiles = [];
+
+function setupFileUpload() {
+  const fileInput = document.getElementById('evidence_files');
+  const previewContainer = document.getElementById('file-preview');
+  
+  fileInput.addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    
+    files.forEach(file => {
+      // Check if file is not already added
+      if (!selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+        selectedFiles.push(file);
+      }
+    });
+    
+    updateFilePreview();
+  });
+}
+
+function updateFilePreview() {
+  const previewContainer = document.getElementById('file-preview');
+  previewContainer.innerHTML = '';
+  
+  selectedFiles.forEach((file, index) => {
+    const item = document.createElement('div');
+    item.className = 'file-preview-item';
+    
+    // Get appropriate icon based on file type
+    let icon = '📄';
+    if (file.type.startsWith('image/')) icon = '🖼️';
+    else if (file.type.includes('pdf')) icon = '📕';
+    else if (file.type.includes('word') || file.name.endsWith('.doc') || file.name.endsWith('.docx')) icon = '📘';
+    else if (file.type.includes('excel') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) icon = '📗';
+    
+    // Truncate filename if too long
+    const displayName = file.name.length > 20 ? file.name.substring(0, 17) + '...' : file.name;
+    
+    item.innerHTML = `${icon} ${displayName} <span class="remove-file" data-index="${index}">✕</span>`;
+    previewContainer.appendChild(item);
+  });
+  
+  // Add remove handlers
+  previewContainer.querySelectorAll('.remove-file').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const index = parseInt(this.dataset.index);
+      selectedFiles.splice(index, 1);
+      updateFilePreview();
+    });
+  });
+}
+
+function clearFileUpload() {
+  selectedFiles = [];
+  const fileInput = document.getElementById('evidence_files');
+  fileInput.value = '';
+  updateFilePreview();
+}
+
+// ===== DYNAMIC LEARNING FOR DESCRIPTIONS =====
+const STORAGE_KEY_DESC = 'problemTracking_descriptions';
+const STORAGE_KEY_ACTIONS = 'problemTracking_actions';
+const MAX_SAVED_ITEMS = 50; // Keep last 50 unique entries
+
+// Load saved descriptions from localStorage
+function loadSavedDescriptions() {
+  const datalist = document.getElementById('descriptions');
+  const saved = getSavedItems(STORAGE_KEY_DESC);
+  
+  datalist.innerHTML = '';
+  saved.forEach(desc => {
+    const option = document.createElement('option');
+    option.value = desc;
+    datalist.appendChild(option);
+  });
+}
+
+// Load saved corrective actions from localStorage
+function loadSavedCorrectiveActions() {
+  const datalist = document.getElementById('corrective_actions');
+  if (!datalist) return;
+  
+  const saved = getSavedItems(STORAGE_KEY_ACTIONS);
+  
+  datalist.innerHTML = '';
+  saved.forEach(action => {
+    const option = document.createElement('option');
+    option.value = action;
+    datalist.appendChild(option);
+  });
+}
+
+// Save a new item to localStorage
+function saveItem(storageKey, value) {
+  if (!value || value.trim() === '') return;
+  
+  let saved = getSavedItems(storageKey);
+  
+  // Remove if already exists (to move it to top)
+  saved = saved.filter(item => item.toLowerCase() !== value.toLowerCase());
+  
+  // Add to beginning (most recent first)
+  saved.unshift(value.trim());
+  
+  // Keep only the last MAX_SAVED_ITEMS
+  if (saved.length > MAX_SAVED_ITEMS) {
+    saved = saved.slice(0, MAX_SAVED_ITEMS);
+  }
+  
+  localStorage.setItem(storageKey, JSON.stringify(saved));
+}
+
+// Get saved items from localStorage
+function getSavedItems(storageKey) {
+  try {
+    const data = localStorage.getItem(storageKey);
+    return data ? JSON.parse(data) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+// ===== COLLAPSIBLE SECTIONS =====
+function setupCollapsible() {
+  const header = document.getElementById('resolution-header');
+  const content = document.getElementById('resolution-content');
+  
+  header.addEventListener('click', function() {
+    this.classList.toggle('collapsed');
+    content.classList.toggle('collapsed');
+  });
+}
+
+// ===== QUICK TEMPLATES (LEARNING) =====
+const STORAGE_KEY_TEMPLATES = 'problemTracking_templates';
+const MAX_TEMPLATES = 8; // Show max 8 most used templates
+
+function setupQuickTemplates() {
+  loadAndRenderTemplates();
+}
+
+function loadAndRenderTemplates() {
+  const container = document.getElementById('template-buttons');
+  const templates = getSavedTemplates();
+  
+  container.innerHTML = '';
+  
+  if (templates.length === 0) {
+    container.innerHTML = '<span class="no-templates">Templates will appear as you submit issues</span>';
+    return;
+  }
+  
+  // Sort by usage count and take top ones
+  templates
+    .sort((a, b) => b.count - a.count)
+    .slice(0, MAX_TEMPLATES)
+    .forEach((template, index) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'template-btn';
+      btn.dataset.index = index;
+      
+      // Create short label from description (first 25 chars)
+      const shortDesc = template.description.length > 25 
+        ? template.description.substring(0, 22) + '...' 
+        : template.description;
+      btn.textContent = shortDesc;
+      btn.title = `${template.category}: ${template.description}`;
+      
+      btn.addEventListener('click', () => applyTemplate(template));
+      container.appendChild(btn);
+    });
+}
+
+function applyTemplate(template) {
+  document.querySelector('input[name="category"]').value = template.category || '';
+  document.querySelector('input[name="description"]').value = template.description || '';
+  document.querySelector('input[name="corrective_action"]').value = template.corrective_action || '';
+  
+  updateProgress();
+  showToast('Template applied!', false);
+}
+
+function getSavedTemplates() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY_TEMPLATES) || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveTemplate(category, description, corrective_action) {
+  // Only save if description has content
+  if (!description || description.trim() === '') return;
+  
+  let templates = getSavedTemplates();
+  
+  // Check if similar template exists (match by description)
+  const existingIndex = templates.findIndex(t => 
+    t.description.toLowerCase() === description.toLowerCase()
+  );
+  
+  if (existingIndex >= 0) {
+    // Increment count for existing template
+    templates[existingIndex].count++;
+    // Update category/action in case they changed
+    templates[existingIndex].category = category;
+    templates[existingIndex].corrective_action = corrective_action;
+  } else {
+    // Add new template
+    templates.push({
+      category: category || '',
+      description: description.trim(),
+      corrective_action: corrective_action || '',
+      count: 1
+    });
+  }
+  
+  // Keep only top 50 templates by count
+  templates.sort((a, b) => b.count - a.count);
+  templates = templates.slice(0, 50);
+  
+  localStorage.setItem(STORAGE_KEY_TEMPLATES, JSON.stringify(templates));
+}
+
+// ===== PROGRESS TRACKING =====
+function setupProgressTracking() {
+  const requiredFields = document.querySelectorAll('[required]');
+  
+  requiredFields.forEach(field => {
+    field.addEventListener('input', updateProgress);
+    field.addEventListener('change', updateProgress);
+  });
+  
+  // Initial update
+  updateProgress();
+}
+
+function updateProgress() {
+  const requiredFields = document.querySelectorAll('[required]');
+  let filled = 0;
+  const total = requiredFields.length;
+  
+  requiredFields.forEach(field => {
+    if (field.value && field.value.trim() !== '') {
+      filled++;
+      field.closest('.form-group')?.classList.add('completed');
+    } else {
+      field.closest('.form-group')?.classList.remove('completed');
+    }
+  });
+  
+  const percentage = (filled / total) * 100;
+  document.getElementById('progress-fill').style.width = percentage + '%';
+  document.getElementById('progress-count').textContent = filled;
+  document.getElementById('progress-total').textContent = total;
+}
+
+// ===== REMEMBER PREFERENCES =====
+const STORAGE_KEY_PREFS = 'problemTracking_preferences';
+
+function loadSavedPreferences() {
+  try {
+    const prefs = JSON.parse(localStorage.getItem(STORAGE_KEY_PREFS) || '{}');
+    
+    if (prefs.line) {
+      const lineSelect = document.querySelector('select[name="line"]');
+      for (let option of lineSelect.options) {
+        if (option.value === prefs.line) {
+          option.selected = true;
+          break;
+        }
+      }
+    }
+    
+    if (prefs.owner) {
+      const ownerSelect = document.getElementById('owner-select');
+      for (let option of ownerSelect.options) {
+        if (option.value === prefs.owner) {
+          option.selected = true;
+          break;
+        }
+      }
+    }
+    
+    // Update progress after loading preferences
+    updateProgress();
+  } catch (e) {
+    console.log('No saved preferences');
+  }
+}
+
+function savePreferences() {
+  if (!document.getElementById('remember-prefs').checked) return;
+  
+  const prefs = {
+    line: document.querySelector('select[name="line"]').value,
+    owner: document.getElementById('owner-select').value
+  };
+  
+  localStorage.setItem(STORAGE_KEY_PREFS, JSON.stringify(prefs));
+}
+
+// ===== TOAST NOTIFICATIONS =====
+function showToast(message, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = 'toast' + (isError ? ' error' : '');
+  
+  // Show
+  setTimeout(() => toast.classList.add('show'), 10);
+  
+  // Hide after 3 seconds
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ===== FORM SUBMISSION =====
+document.getElementById("form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  
+  const submitBtn = document.getElementById('submit-btn');
+  submitBtn.classList.add('loading');
+  submitBtn.textContent = 'Sending...';
+
+  const url = "https://script.google.com/macros/s/AKfycbx3_vhRhPCBdHWT2tsdjRqEe_9rpPJSIn77ste6RE25utO9VAYeserJEy4V21w7_XQP/exec";
+
+  const formData = new FormData(this);
+  
+  // Remove the default file input and add selected files
+  formData.delete('evidence_files');
+  selectedFiles.forEach((file, index) => {
+    formData.append('evidence_file_' + index, file);
+  });
+  
+  // Add file names as a list for reference
+  if (selectedFiles.length > 0) {
+    const fileNames = selectedFiles.map(f => f.name).join(', ');
+    formData.append('evidence_files_list', fileNames);
+  }
+  
+  // Save description and corrective action for future autocomplete
+  const category = formData.get('category');
+  const description = formData.get('description');
+  const correctiveAction = formData.get('corrective_action');
+  
+  saveItem(STORAGE_KEY_DESC, description);
+  saveItem(STORAGE_KEY_ACTIONS, correctiveAction);
+  
+  // Save as quick template (learns from usage)
+  saveTemplate(category, description, correctiveAction);
+  
+  // Save preferences (Line & Owner)
+  savePreferences();
+
+  fetch(url, {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.text())
+  .then(() => {
+    // Show success toast instead of alert
+    showToast('✓ Data sent successfully!');
+    
+    document.getElementById("form").reset();
+    // Clear file uploads
+    clearFileUpload();
+    // Re-apply auto-fill after reset
+    autoSelectWeek();
+    autoDetectShift();
+    autoFillDateDetection();
+    autoFillDateFinished();
+    autoFillIssueTime();
+    // Reload saved suggestions
+    loadSavedDescriptions();
+    loadSavedCorrectiveActions();
+    // Reload saved preferences
+    loadSavedPreferences();
+    // Reload quick templates (now includes new submission)
+    loadAndRenderTemplates();
+    // Update progress
+    updateProgress();
+    
+    // Reset button
+    submitBtn.classList.remove('loading');
+    submitBtn.textContent = '✓ Submit Report';
+  })
+  .catch(() => {
+    showToast('Error sending data. Please try again.', true);
+    submitBtn.classList.remove('loading');
+    submitBtn.textContent = '✓ Submit Report';
+  });
+});
+</script>
+
+</body>
+</html>

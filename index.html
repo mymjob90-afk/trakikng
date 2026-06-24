@@ -4,217 +4,330 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Problem Tracking</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      padding: 15px;
-    }
-
-    h2 {
-      text-align: center;
-    }
-
-    form {
-      background: #fff;
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    input,
-    textarea,
-    select,
-    button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px; /* evita zoom en iPhone */
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    button {
-      background: #1976d2;
-      color: white;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #125aa0;
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 8px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-<h2>Problem Tracking Form</h2>
+<div class="container">
+  <div class="header">
+    <h2>📋 Problem Tracking Form</h2>
+    <p>Report and track production issues</p>
+    <button type="button" class="help-btn" id="help-btn" title="How to use">❓</button>
+  </div>
 
-<form id="form">
-  <select name="week" required>
-    <option value="">Select Week</option>
-    <option>Week 1</option>
-    <option>Week 2</option>
-    <option>Week 3</option>
-    <option>Week 4</option>
-    <option>Week 5</option>
-    <option>Week 6</option>
-    <option>Week 7</option>
-    <option>Week 8</option>
-    <option>Week 9</option>
-    <option>Week 10</option>
-    <option>Week 11</option>
-    <option>Week 12</option>
-    <option>Week 13</option>
-    <option>Week 14</option>
-    <option>Week 15</option>
-    <option>Week 16</option>
-  </select>
+  <form id="form">
+    <!-- Progress indicator -->
+    <div class="progress-text"><span id="progress-count">0</span> of <span id="progress-total">6</span> required fields</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+    </div>
 
-  <select name="line" required>
-    <option value="">Select Line</option>
-    <option>C1A</option>
-    <option>C4A</option>
-    <option>D2A</option>
-    <option>D3A</option>
-    <option>C7A</option>
-    <option>C9A</option>
-    <option>B4A</option>
-    <option>C5A</option>
-    <option>C6A</option>
-    <option>B3A</option>
-  </select>
-  
-  <input name="model" list="models" placeholder="Model" required>
-  <datalist id="models">
-    <option value="V75C">
-    <option value="V75CE67">
-    <option value="V75COP">
-    <option value="V76C">
-    <option value="V76CE67">
-    <option value="V75COP">
-    <option value="V73F">
-    <option value="V73FOP">
-    <option value="V73FE41">
-    <option value="V74A"> 
-    <option value="V71FR">
-    <option value="V71FLS">
-    <option value="V71FLX">
-    <option value="V71R">
-    <option value="V71L">
-    <option value="V73H">
-    <option value="V73HOP">
-    <option value="V74">
-    <option value="V75D">
-    <option value="V76D">
-    <option value="V77B">
-  </datalist>
-  
-  <input name="station" list="stations" placeholder="Station" required>
-  <datalist id="stations">
-    <option value="Pincheck1">
-    <option value="Pincheck2">
-    <option value="Pincheck3">
-    <option value="Timcheck1">
-    <option value="Timcheck2">
-    <option value="Timcheck3">
-    <option value="Glueweight1">
-    <option value="Glueweight2">
-    <option value="Glueweight3">
-    <option value="Assy1">
-    <option value="Assy2">
-    <option value="Assy3">
-    <option value="CCDcheck1">
-    <option value="CCDcheck2">
-    <option value="CCDcheck3">
-    <option value="Function">   
-  </datalist>
+    <!-- Quick Templates -->
+    <div class="quick-templates">
+      <span class="quick-templates-title">⚡ Quick:</span>
+      <div class="template-buttons" id="template-buttons"></div>
+    </div>
 
-  <input name="category" list="categorias" placeholder="Category" required>
-  <datalist id="categorias">
-    <option value="Software Team">
-    <option value="Auto Team">
-    <option value="Fixture Team">
-    <option value="Production">
-    <option value="Shopfloor">
-    
-  </datalist>
-  
-  <input name="issue_time" placeholder="Issue time" required>
+    <!-- Basic Information Section -->
+    <div class="form-section">
+      <div class="section-title">Basic Information</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Week <span class="required">*</span></label>
+          <select name="week" required>
+            <option value="">Select Week</option>
+            <option>Week 1</option>
+            <option>Week 2</option>
+            <option>Week 3</option>
+            <option>Week 4</option>
+            <option>Week 5</option>
+            <option>Week 6</option>
+            <option>Week 7</option>
+            <option>Week 8</option>
+            <option>Week 9</option>
+            <option>Week 10</option>
+            <option>Week 11</option>
+            <option>Week 12</option>
+            <option>Week 13</option>
+            <option>Week 14</option>
+            <option>Week 15</option>
+            <option>Week 16</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Shift <span class="required">*</span></label>
+          <input name="shift" list="shifts" placeholder="Select shift" required>
+          <datalist id="shifts">
+            <option value="Day shift">
+            <option value="Middle shift">
+            <option value="Night shift">
+          </datalist>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Line <span class="required">*</span></label>
+          <select name="line" required>
+            <option value="">Select Line</option>
+            <option>ALL</option>
+            <option>C1A</option>
+            <option>C4A</option>
+            <option>D2A</option>
+            <option>D3A</option>
+            <option>C7A</option>
+            <option>C9A</option>
+            <option>B4A</option>
+            <option>C5A</option>
+            <option>C6A</option>
+            <option>B3A</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Model <span class="required">*</span></label>
+          <input name="model" list="models" placeholder="Select model" required>
+          <datalist id="models">
+            <option value="ALL">
+            <option value="V75C">
+            <option value="V75CE67">
+            <option value="V75COP">
+            <option value="V76C">
+            <option value="V76CE67">
+            <option value="V73F">
+            <option value="V73FOP">
+            <option value="V73FE41">
+            <option value="V74A">
+            <option value="V71FR">
+            <option value="V71FLS">
+            <option value="V71FLX">
+            <option value="V71R">
+            <option value="V71L">
+            <option value="V73H">
+            <option value="V73HOP">
+            <option value="V74">
+            <option value="V75D">
+            <option value="V76D">
+            <option value="V77B">
+          </datalist>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Station <span class="required">*</span></label>
+          <input name="station" list="stations" placeholder="Select station" required>
+          <datalist id="stations">
+            <option value="ALL">
+            <option value="Pincheck1">
+            <option value="Pincheck2">
+            <option value="Pincheck3">
+            <option value="Timcheck1">
+            <option value="Timcheck2">
+            <option value="Timcheck3">
+            <option value="Glueweight1">
+            <option value="Glueweight2">
+            <option value="Glueweight3">
+            <option value="Assy1">
+            <option value="Assy2">
+            <option value="Assy3">
+            <option value="CCDcheck1">
+            <option value="CCDcheck2">
+            <option value="CCDcheck3">
+            <option value="Function">
+          </datalist>
+        </div>
+        <div class="form-group">
+          <label>Category <span class="required">*</span></label>
+          <input name="category" list="categorias" placeholder="Select category" required>
+          <datalist id="categorias">
+            <option value="Software Team">
+            <option value="Auto Team">
+            <option value="Fixture Team">
+            <option value="Production">
+            <option value="Shopfloor">
+          </datalist>
+        </div>
+      </div>
+    </div>
 
-  <textarea name="description" placeholder="Description"></textarea>
+    <!-- Issue Details Section -->
+    <div class="form-section">
+      <div class="section-title">Issue Details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Issue Duration <span class="required">*</span></label>
+          <input name="issue_time" list="issue_times" placeholder="e.g. 30 min, 1 hour" required>
+          <datalist id="issue_times"></datalist>
+        </div>
+        <div class="form-group">
+          <label>Date Detection</label>
+          <input type="date" name="date_detection">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description <span class="hint">(learns from your inputs)</span></label>
+        <input name="description" list="descriptions" placeholder="Type or select from previous descriptions">
+        <datalist id="descriptions"></datalist>
+      </div>
+    </div>
 
-  <input name="status" list="sta"placeholder="Status">
-  <datalist id= "sta">
-    <option value="Done">
-    <option value="Pending">
-    <option value="In process">
-  </datalist>
+    <!-- Resolution Section (Collapsible) -->
+    <div class="form-section">
+      <div class="section-title collapsible-header" id="resolution-header">
+        <span>Resolution & Status <span class="optional-badge">Optional - auto-filled</span></span>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="collapsible-content" id="resolution-content">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Status</label>
+            <select name="status">
+              <option value="Done" selected>Done</option>
+              <option value="Pending">Pending</option>
+              <option value="In process">In process</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Owner</label>
+            <select name="owner" id="owner-select">
+              <option value="">Select Owner</option>
+              <option value="Eduardo Batarse">Eduardo Batarse</option>
+              <option value="Juan Romay">Juan Romay</option>
+              <option value="Job Ramirez">Job Ramirez</option>
+              <option value="Eduardo Moreno">Eduardo Moreno</option>
+              <option value="Joan Ocaña">Joan Ocaña</option>
+              <option value="Imanol Montellano">Imanol Montellano</option>
+              <option value="Angel Hernandez">Angel Hernandez</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Corrective Action <span class="hint">(learns from your inputs)</span></label>
+          <input name="corrective_action" list="corrective_actions" placeholder="Type or select from previous actions">
+          <datalist id="corrective_actions"></datalist>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date Finished <span class="required">*</span></label>
+            <input type="date" name="date_finished" required>
+          </div>
+          <div class="form-group">
+            <label>Evidence Link</label>
+            <input name="evidence" placeholder="Paste link or reference">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Attach Files <span class="hint">(images, documents)</span></label>
+          <div class="file-upload-wrapper">
+            <label class="file-input-label">
+              📎 Click to attach files
+              <input type="file" id="evidence_files" name="evidence_files" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
+            </label>
+            <div class="file-preview" id="file-preview"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Comments</label>
+          <textarea name="comments" placeholder="Any additional notes..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Remember preferences -->
+    <label class="remember-prefs">
+      <input type="checkbox" id="remember-prefs" checked>
+      Remember my Line & Owner for next time
+    </label>
+
+    <button type="submit" id="submit-btn">✓ Submit Report</button>
+  </form>
+
+  <!-- Feedback Section -->
+  <div class="feedback-section">
+    <div class="section-title collapsible-header" id="feedback-header">
+      <span>💡 Suggestions & Feedback</span>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="collapsible-content collapsed" id="feedback-content">
+      <p class="feedback-intro">Help us improve! Share your ideas or report issues with this form.</p>
+      <div class="form-group">
+        <label>Your Name <span class="hint">(optional)</span></label>
+        <input type="text" id="feedback-name" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label>Your Email <span class="hint">(optional, for follow-up)</span></label>
+        <input type="email" id="feedback-email" placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>Feedback Type</label>
+        <select id="feedback-type">
+          <option value="suggestion">💡 Suggestion / Improvement</option>
+          <option value="bug">🐛 Bug Report</option>
+          <option value="feature">✨ New Feature Request</option>
+          <option value="other">📝 Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Your Feedback <span class="required">*</span></label>
+        <textarea id="feedback-message" placeholder="Tell us how we can make this form better..." rows="4" required></textarea>
+      </div>
+      <button type="button" id="send-feedback-btn" class="feedback-btn">📧 Send Feedback</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<!-- Help Modal -->
+<div class="modal-overlay" id="help-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>📖 How to Use</h3>
+      <button type="button" class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="help-section">
+        <h4>🚀 Quick Start</h4>
+        <p>Most fields are <strong>auto-filled</strong> for you! Just verify the information and add the issue details.</p>
+      </div>
       
-  <input name="owner" placeholder="Owner">
+      <div class="help-section">
+        <h4>📝 Step by Step</h4>
+        <ol>
+          <li><strong>Basic Info:</strong> Week, Shift, Line, Model, Station, and Category are automatically detected or remembered from your last visit.</li>
+          <li><strong>Issue Details:</strong> Add the time and description of the problem. Use the autocomplete suggestions from your previous entries!</li>
+          <li><strong>Resolution:</strong> Click to expand. Status defaults to "Done", dates are auto-filled. Add corrective action if needed.</li>
+          <li><strong>Submit:</strong> Click the submit button to send the report.</li>
+        </ol>
+      </div>
+      
+      <div class="help-section">
+        <h4>⚡ Quick Templates</h4>
+        <p>As you submit issues, the most common ones appear as quick templates at the top. Click any template to auto-fill the form!</p>
+      </div>
+      
+      <div class="help-section">
+        <h4>📎 Attachments</h4>
+        <p>You can attach images, PDFs, and documents as evidence. Click "📎 Click to attach files" in the Resolution section.</p>
+      </div>
+      
+      <div class="help-section">
+        <h4>⏰ Shift Schedule</h4>
+        <ul class="shift-list">
+          <li><span class="shift-badge day">Day</span> 7:00 AM - 3:00 PM</li>
+          <li><span class="shift-badge middle">Middle</span> 3:00 PM - 11:00 PM</li>
+          <li><span class="shift-badge night">Night</span> 11:00 PM - 7:00 AM</li>
+        </ul>
+      </div>
+      
+      <div class="help-section">
+        <h4>💾 Your Data is Saved</h4>
+        <p>Your preferences (Line, Owner) and input history are stored locally in your browser. Enable "Remember my Line & Owner" to keep your selections.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <textarea name="corrective_action" placeholder="Corrective action"></textarea><br>
-  
-  <label>Date detection</label>
-  <input type="date"  name="date_detection" >
-
-  <textarea name="comments" placeholder="Comments"></textarea><br>
-
-  <input name="evidence" placeholder="Evidence (link o texto)"><br>
-  
-  <label1>Date finished</label1>
-  <input type="date" name="date_finished" required>
-  
-  <input name="shift" list="shifts" placeholder="Shift" required>
-  <datalist id="shifts">
-    <option value="Day shift">
-    <option value="Middle shift">
-    <option value="Night shift">  
-  </datalist>
-
- 
-
-  <button type="submit">Submit</button>
-</form>
-
-<script>
-document.getElementById("form").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const url = "https://script.google.com/macros/s/AKfycbx3_vhRhPCBdHWT2tsdjRqEe_9rpPJSIn77ste6RE25utO9VAYeserJEy4V21w7_XQP/exec";
-
-  const formData = new FormData(this);
-
-  fetch(url, {
-    method: "POST",
-    body: formData
-  })
-  .then(res => res.text())
-  .then(() => {
-    alert("Data sent successfully");
-    document.getElementById("form").reset();
-  })
-  .catch(() => alert("Error sending data"));
-});
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
