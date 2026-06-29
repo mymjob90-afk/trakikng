@@ -1,6 +1,6 @@
 // ===== CONFIGURATION =====
 const CONFIG = {
-  GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbx7aSCA0MlNgm94PoLJ58Tf5NMjrro-1YHzEmedWV7hfMZKzVrksuIFVbTyZ3QzhmQu/exec",
+  GOOGLE_SCRIPT_URL: "ssc",
   FEEDBACK_EMAIL: "job.ramirez@qmmcmx.com", // Change this to your email
   STORAGE_KEYS: {
     DESCRIPTIONS: 'problemTracking_descriptions',
